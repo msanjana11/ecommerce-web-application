@@ -1,21 +1,79 @@
+// const productContainer = document.getElementById("product-container");
+
+// async function fetchProducts() {
+
+//     try {
+
+//         const response = await fetch("https://ecommerce-web-application-ke5f.onrender.com/api/products");
+
+//         const products = await response.json();
+
+//         displayProducts(products);
+
+//     } catch (error) {
+
+//         console.log(error);
+
+//     }
+
+// }
+
+// function displayProducts(products) {
+
+//     productContainer.innerHTML = "";
+
+//     products.forEach((product) => {
+
+//         const card = document.createElement("div");
+
+//         card.classList.add("product-card");
+
+//         card.innerHTML = `
+//             <img src="${product.image}" alt="${product.name}">
+
+//             <h3>${product.name}</h3>
+
+//             <p>₹${product.price}</p>
+
+//             <p>${product.description}</p>
+
+//             <button onclick="addToCart('${product.name}', ${product.price})">
+//                 Add to Cart
+//             </button>
+//         `;
+
+//         productContainer.appendChild(card);
+
+//     });
+
+// }
+
+// function addToCart(name, price) {
+
+//     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+//     cart.push({ name, price });
+
+//     localStorage.setItem("cart", JSON.stringify(cart));
+
+//     alert("Product added to cart");
+
+// }
 const productContainer = document.getElementById("product-container");
 
+const API_URL = "https://ecommerce-web-application-ke5f.onrender.com";
+
 async function fetchProducts() {
-
     try {
-
-        const response = await fetch("https://ecommerce-web-application-ke5f.onrender.com/products");
-
+        const response = await fetch(`${API_URL}/api/products`);
         const products = await response.json();
 
         displayProducts(products);
 
     } catch (error) {
-
-        console.log(error);
-
+        console.log("Error:", error);
+        productContainer.innerHTML = "<p>Failed to load products</p>";
     }
-
 }
 
 function displayProducts(products) {
@@ -25,17 +83,13 @@ function displayProducts(products) {
     products.forEach((product) => {
 
         const card = document.createElement("div");
-
         card.classList.add("product-card");
 
         card.innerHTML = `
             <img src="${product.image}" alt="${product.name}">
-
             <h3>${product.name}</h3>
-
             <p>₹${product.price}</p>
-
-            <p>${product.description}</p>
+            <p>${product.description || ""}</p>
 
             <button onclick="addToCart('${product.name}', ${product.price})">
                 Add to Cart
@@ -45,7 +99,6 @@ function displayProducts(products) {
         productContainer.appendChild(card);
 
     });
-
 }
 
 function addToCart(name, price) {
@@ -57,7 +110,8 @@ function addToCart(name, price) {
     localStorage.setItem("cart", JSON.stringify(cart));
 
     alert("Product added to cart");
-
 }
+
+fetchProducts();
 
 
