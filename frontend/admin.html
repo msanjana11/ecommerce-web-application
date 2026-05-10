@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <h1>Admin Panel</h1>
+
+        <a href="index.html">Home</a>
+    </nav>
+
+    <div class="form-container">
+
+        <form id="product-form">
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Product Name"
+                required
+            >
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Price"
+                required
+            >
+
+            <input
+                type="text"
+                id="image"
+                placeholder="Image URL"
+            >
+
+            <input
+                type="text"
+                id="description"
+                placeholder="Description"
+            >
+
+            <button type="submit">
+                Add Product
+            </button>
+
+        </form>
+
+    </div>
+
+    <script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user || user.role !== "admin") {
+
+    alert("Access Denied");
+
+    window.location.href = "index.html";
+}
+        const form = document.getElementById("product-form");
+
+        form.addEventListener("submit", async (e) => {
+
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+
+            const price = document.getElementById("price").value;
+
+            const image = document.getElementById("image").value;
+
+            const description =
+                document.getElementById("description").value;
+
+            const response = await fetch(
+                "http://localhost:5000/api/products/add",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name,
+                        price,
+                        image,
+                        description
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            alert(data.message);
+
+            form.reset();
+
+        });
+
+    </script>
+
+</body>
+
+</html>
